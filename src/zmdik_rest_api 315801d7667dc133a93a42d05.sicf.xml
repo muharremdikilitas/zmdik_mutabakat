@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_SICF" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <URL>/sap/bc/zmdik_rest_api/</URL>
+   <ICFSERVICE>
+    <ICF_NAME>ZMDIK_REST_API</ICF_NAME>
+    <ORIG_NAME>zmdik_rest_api</ORIG_NAME>
+   </ICFSERVICE>
+   <ICFDOCU>
+    <ICF_NAME>ZMDIK_REST_API</ICF_NAME>
+    <ICF_LANGU>T</ICF_LANGU>
+    <ICF_DOCU>zmdik rest api                                                        zmdik rest api                                                        zmdik rest api</ICF_DOCU>
+   </ICFDOCU>
+   <ICFHANDLER_TABLE>
+    <ICFHANDLER>
+     <ICF_NAME>ZMDIK_REST_API</ICF_NAME>
+     <ICFORDER>01</ICFORDER>
+     <ICFTYP>A</ICFTYP>
+     <ICFHANDLER>ZMDIK_REST_API</ICFHANDLER>
+    </ICFHANDLER>
+   </ICFHANDLER_TABLE>
+  </asx:values>
+ </asx:abap>
+</abapGit>

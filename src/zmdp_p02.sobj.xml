@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_SOBJ" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <SWOTDI>
+    <SWOTDI>
+     <OBJTYPE>ZMDP_P02</OBJTYPE>
+     <INTERFACE>IFGOSXSERV</INTERFACE>
+     <EDITORDER>0002</EDITORDER>
+     <CREA_REL>755</CREA_REL>
+    </SWOTDI>
+    <SWOTDI>
+     <OBJTYPE>ZMDP_P02</OBJTYPE>
+     <INTERFACE>IFSAP</INTERFACE>
+     <EDITORDER>0001</EDITORDER>
+    </SWOTDI>
+   </SWOTDI>
+   <SWOTDV>
+    <SWOTDV>
+     <OBJTYPE>ZMDP_P02</OBJTYPE>
+     <VERB>COMPANYCODE</VERB>
+     <VERBTYPE>A</VERBTYPE>
+     <CREA_REL>755</CREA_REL>
+     <EDITORDER>0001</EDITORDER>
+     <EDITELEM>CompanyCode</EDITELEM>
+     <REFTYPE>D</REFTYPE>
+     <REFSTRUCT>ZMDP_T001</REFSTRUCT>
+     <REFFIELD>COMP_CODE</REFFIELD>
+     <ELEMTYPE>E</ELEMTYPE>
+     <ATTRTYPE>D</ATTRTYPE>
+    </SWOTDV>
+    <SWOTDV>
+     <OBJTYPE>ZMDP_P02</OBJTYPE>
+     <VERB>GOSADDOBJECTS</VERB>
+     <VERBTYPE>M</VERBTYPE>
+     <CREA_REL>755</CREA_REL>
+     <EDITORDER>0001</EDITORDER>
+     <EDITELEM>GOSAddObjects</EDITELEM>
+     <REFTYPE>D</REFTYPE>
+     <TABELEM>X</TABELEM>
+     <ELEMTYPE>E</ELEMTYPE>
+     <SYNCHRON>X</SYNCHRON>
+    </SWOTDV>
+   </SWOTDV>
+   <SWOTOL>
+    <SWOTOL>
+     <OBJTYPE>ZMDP_P02</OBJTYPE>
+     <AREA>*ROOT</AREA>
+     <AREACLASS>04</AREACLASS>
+     <MAINENTRY>X</MAINENTRY>
+    </SWOTOL>
+   </SWOTOL>
+   <SWOTTV>
+    <SWOTTV>
+     <OBJTYPE>ZMDP_P02</OBJTYPE>
+     <LANGUAGE>T</LANGUAGE>
+     <VERB>COMPANYCODE</VERB>
+     <DESCRIPT>Şirket kodu</DESCRIPT>
+     <SHORTTEXT>Şirket kodu</SHORTTEXT>
+    </SWOTTV>
+    <SWOTTV>
+     <OBJTYPE>ZMDP_P02</OBJTYPE>
+     <LANGUAGE>T</LANGUAGE>
+     <VERB>GOSADDOBJECTS</VERB>
+     <DESCRIPT>Nesneler ekle</DESCRIPT>
+     <SHORTTEXT>İş nesnelerini genel hizmetlere aktar</SHORTTEXT>
+    </SWOTTV>
+   </SWOTTV>
+   <TOJTB>
+    <TOJTB>
+     <NAME>ZMDP_P02</NAME>
+     <ACTIVELANG>T</ACTIVELANG>
+     <PROGNAME>ZMDP_P68</PROGNAME>
+     <EDITELEM>ZMDP_P02</EDITELEM>
+     <EPRIMETHOD>Display</EPRIMETHOD>
+     <APPLIC>*</APPLIC>
+     <CREA_REL>755</CREA_REL>
+     <CHAN_REL>755</CHAN_REL>
+     <OBJTYPECLS>01</OBJTYPECLS>
+    </TOJTB>
+   </TOJTB>
+   <TOJTT>
+    <TOJTT>
+     <NAME>ZMDP_P02</NAME>
+     <LANGUAGE>T</LANGUAGE>
+     <NTEXT>GOS</NTEXT>
+     <STEXT>GOS OBJE</STEXT>
+    </TOJTT>
+   </TOJTT>
+  </asx:values>
+ </asx:abap>
+</abapGit>

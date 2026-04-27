@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZMDIK_ERECV</ARBGB>
+    <MASTERLANG>T</MASTERLANG>
+    <STEXT>MDP Group | E-mutabakat Mesaj Sınıfı</STEXT>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>000</MSGNR>
+     <TEXT>Başarılı</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>Şirket kodu uyarlaması eksik veya hatalı(/MDPES/EREC_T901)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Genel parametre tanımları eksik veya hatalı!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Kullanıcı bilgileri bulunamadı(/MDPES/EREC_T902)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Kullanıcı için tanımlı şirket kodu bulunamadı(/MDPES/EREC_T903)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Seçilen döneme ait veri bulunamadı</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>Kullanıcı yetkilendirmesi yapılmamış.(/MDPES/EREC_T904)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>Mutabakat gönderimi için statü uygun değil!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>Firmayla ilgili dönemde mutabık kalınmış. Tekrar mutabakat gönderilemez!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>009</MSGNR>
+     <TEXT>Başarıyla gönderildi.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>010</MSGNR>
+     <TEXT>BA/BS verileri başarıyla hazırlandı.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>011</MSGNR>
+     <TEXT>Geçersiz GUID - &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>012</MSGNR>
+     <TEXT>Mutabakat formu daha önce yanıtlanmış</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>013</MSGNR>
+     <TEXT>Mutabakat formu yanıt süresi dolmuş. Son mail üzerinden yanıtlayınız.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>014</MSGNR>
+     <TEXT>Geçersiz link. Son mail üzerinden yanıtlayınız.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>015</MSGNR>
+     <TEXT>Bakiye girişi zorunludur.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>016</MSGNR>
+     <TEXT>Bakiye tablosunda &amp;1 sırada &amp;2 alanı boş.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>017</MSGNR>
+     <TEXT>BA/BS formlarında adet girişi zorunludur.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>018</MSGNR>
+     <TEXT>Mutabık olmama nedeni girişi zorunludur.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>019</MSGNR>
+     <TEXT>Ek dosya zorunludur.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>020</MSGNR>
+     <TEXT>Yanıtlayan bilgisi zorunludur.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>021</MSGNR>
+     <TEXT>Mutabakat türü şirket kodu uyarlaması eksik(/MDPES/EREC_T905)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>022</MSGNR>
+     <TEXT>Son gelen mutabakat maili üzerinden yanıtlama işlemini gerçekleştiriniz.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>023</MSGNR>
+     <TEXT>Mail gönderiminde hata</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>024</MSGNR>
+     <TEXT>Bilinmeyen yanıt türü!</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>025</MSGNR>
+     <TEXT>Yanıtlama adımında gönderilen mutabakat bakiye satırı kadar değer gelmeli</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>026</MSGNR>
+     <TEXT>Ekstre başlangıç tarihi boş geçilemez.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>027</MSGNR>
+     <TEXT>Ekstre bitiş tarihi boş geçilemez.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>028</MSGNR>
+     <TEXT>Ekstre başlangıç tarihi bitiş tarihinden büyük olamaz.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>029</MSGNR>
+     <TEXT>Tanımsız para birimi. Lütfen geçerli bir para birimi girin(TRY,USD,EUR..)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>030</MSGNR>
+     <TEXT>Ekstre başlangıç tarihi sistemden belirlenen başlangıç tarihinden farklı</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>031</MSGNR>
+     <TEXT>E-posta adresi boş olamaz : &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>032</MSGNR>
+     <TEXT>Geçersiz e-posta formatı : &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>033</MSGNR>
+     <TEXT>Geçersiz şirket kodu : &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>034</MSGNR>
+     <TEXT>KOART değeri geçersiz (yalnız D / K) : &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>035</MSGNR>
+     <TEXT>Muhatap alanı boş olamaz</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>036</MSGNR>
+     <TEXT>Müşteri ana veride yok : &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>037</MSGNR>
+     <TEXT>Satıcı ana veride yok : &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>038</MSGNR>
+     <TEXT>TCKN yalnızca rakam içermelidir : &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>039</MSGNR>
+     <TEXT>TCKN 11 haneli olmalıdır : &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>040</MSGNR>
+     <TEXT>İsim alanı geçersiz : &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>041</MSGNR>
+     <TEXT>Silme göstergesi yalnızca X veya boş olabilir : &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>042</MSGNR>
+     <TEXT>İlgili kişi alanı boş olamaz</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>043</MSGNR>
+     <TEXT>İlgili kişi değeri geçersiz : &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>T</SPRSL>
+     <ARBGB>ZMDIK_ERECV</ARBGB>
+     <MSGNR>044</MSGNR>
+     <TEXT>Telefon numarası 10 veya 11 haneli olmalıdır : &amp;1</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>

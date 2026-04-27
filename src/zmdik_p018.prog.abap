@@ -1,0 +1,70 @@
+*&---------------------------------------------------------------------*
+*& Report ZMDIK_P018
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZMDIK_P018.
+
+*
+*SELECTION-SCREEN begin of BLOCK b11 WITH FRAME TITLE text-001.
+*  PARAMETERS p_carrid TYPE i.
+*  SELECTION-SCREEN skip.
+*  PARAMETERS p_connid TYPE i.
+*  SELECTION-SCREEN END OF BLOCK b11.
+
+
+*
+*SELECTION-SCREEN BEGIN OF SCREEN 1001 title text-001 as WINDOW.
+*  PARAMETERS: p_carrid TYPE i ,
+*              p_connid TYPE i.
+*  SELECTION-SCREEN END OF SCREEN 1001.
+*
+*  START-OF-SELECTION.
+*  call SELECTION-SCREEN '1001' STARTING AT 5 5.
+
+
+*
+*SELECTION-SCREEN begin of BLOCK b11 WITH FRAME TITLE text-001.
+*  PARAMETERS p_carrid TYPE i.
+*   SELECTION-SCREEN ULINE /1(9).
+*  SELECTION-SCREEN SKIP.
+*  PARAMETERS p_connid TYPE c as CHECKBOX.
+*  SELECTION-SCREEN ULINE /1(9).
+*  SELECTION-SCREEN end of BLOCK b11.
+
+
+
+*
+* SELECTION-SCREEN begin of BLOCK b11 WITH FRAME TITLE text-001.
+*   PARAMETERS p_carrid TYPE i.
+*   SELECTION-SCREEN skip.
+*   PARAMETERS pa_cbox TYPE c AS CHECKBOX.
+*   SELECTION-SCREEN COMMENT /25(15) text-002 .
+*   SELECTION-SCREEN end of BLOCK b11.
+
+
+*SELECTION-SCREEN begin of BLOCK b11 WITH FRAME TITLE text-001.
+*  PARAMETERS p_carrid TYPE i.
+*  SELECTION-SCREEN skip.
+*  PARAMETERS p_cbox TYPE c AS CHECKBOX.
+*  SELECTION-SCREEN COMMENT /25(15) text-002 FOR FIELD p_cbox.
+*  SELECTION-SCREEN ULINE /25(10).
+*  SELECTION-SCREEN PUSHBUTTON /1(35) text-003 USER-COMMAND cmd.
+*  SELECTION-SCREEN end of BLOCK b11.
+*
+*  at SELECTION-SCREEN.
+*    case sy-ucomm.
+*      when 'cmd'.
+*        MESSAGE 'buton 1 tıklandı' TYPE 'I'.
+*        ENDCASE.
+
+
+*
+*SELECTION-SCREEN begin of BLOCK b11 WITH FRAME TITLE text-001.
+*  SELECTION-SCREEN begin of LINE.
+*    SELECTION-SCREEN POSITION 1.
+*    SELECTION-SCREEN PUSHBUTTON 1(35) text-004 USER-COMMAND cmd.
+*    SELECTION-SCREEN POSITION 36.
+*   SELECTION-SCREEN PUSHBUTTON 36(35) text-005 USER-COMMAND cmd.
+*   SELECTION-SCREEN end of line.
+*   SELECTION-SCREEN end of BLOCK b11.

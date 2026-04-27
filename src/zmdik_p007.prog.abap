@@ -1,0 +1,40 @@
+*&---------------------------------------------------------------------*
+*& Report ZMDIK_P007
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zmdik_p007.
+
+
+SELECTION-SCREEN BEGIN OF BLOCK b1 WITH FRAME TITLE TEXT-001.
+  SELECTION-SCREEN BEGIN OF BLOCK b2 WITH FRAME TITLE TEXT-002.
+    PARAMETERS:
+      p_begda TYPE sy-datum OBLIGATORY,
+      p_endda TYPE sy-datum DEFAULT sy-datum.
+  SELECTION-SCREEN END OF BLOCK b2.
+
+  SELECTION-SCREEN BEGIN OF BLOCK b3 WITH FRAME TITLE TEXT-003.
+    PARAMETERS: rb_summ RADIOBUTTON GROUP gr1 USER-COMMAND gr1,
+                rb_det  RADIOBUTTON GROUP gr1.
+
+    SELECTION-SCREEN BEGIN OF BLOCK b4 WITH FRAME TITLE TEXT-004.
+      SELECTION-SCREEN BEGIN OF LINE.
+        PARAMETERS: rb_prog RADIOBUTTON GROUP gr2 USER-COMMAND gr2.
+        SELECTION-SCREEN COMMENT 10(30) FOR FIELD rb_prog.
+
+        PARAMETERS rb_trans RADIOBUTTON GROUP gr2.
+        SELECTION-SCREEN COMMENT 42(30) FOR FIELD rb_trans.
+      SELECTION-SCREEN END OF LINE.
+    SELECTION-SCREEN END OF BLOCK b4.
+
+  SELECTION-SCREEN END OF BLOCK b3.
+SELECTION-SCREEN END OF BLOCK b1.
+
+SELECTION-SCREEN BEGIN OF BLOCK b5 WITH FRAME TITLE TEXT-005.
+  PARAMETERS: p_dest TYPE rfcdes-rfcdest DEFAULT 'none'.
+SELECTION-SCREEN END OF BLOCK b5.
+
+SELECTION-SCREEN BEGIN OF BLOCK b6 WITH FRAME TITLE TEXT-006.
+  SELECT-OPTIONS: s_prog FOR sy-repid,
+                  s_tcode FOR sy-tcode.
+SELECTION-SCREEN END OF BLOCK b6.

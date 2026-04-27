@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_TRAN" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <TSTC>
+    <TCODE>ZP69_TALIMAT</TCODE>
+    <PGMNA>ZMDIK_P69</PGMNA>
+    <DYPNO>0100</DYPNO>
+    <CINFO>gA==</CINFO>
+   </TSTC>
+   <TSTCC>
+    <TCODE>ZP69_TALIMAT</TCODE>
+   </TSTCC>
+   <TSTCT>
+    <SPRSL>T</SPRSL>
+    <TCODE>ZP69_TALIMAT</TCODE>
+    <TTEXT>Talimat Girişi</TTEXT>
+   </TSTCT>
+  </asx:values>
+ </asx:abap>
+</abapGit>

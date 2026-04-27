@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_MDP_EREC_SRV_2</CLSNAME>
+    <LANGU>T</LANGU>
+    <DESCRIPT>mdpes/erec service</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>C_NR_OBJECT</CMPNAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>Numara alanı nesnesi</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>C_NR_RANGE_NR</CMPNAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>Numara alanı numarası</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GT_ITAB</CMPNAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>zmdp service table type</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>MESSAGE_TEXT_BUILD</CMPNAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>Set up a message with parameter</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>SET_MESSAGE</CMPNAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>Message Return Set</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_NEXT_PARNR</CMPNAME>
+     <SCONAME>RV_PARNR</SCONAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>İlgili kişi numarası</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>MESSAGE_TEXT_BUILD</CMPNAME>
+     <SCONAME>EV_MESSAGE</SCONAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>İleti metni</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>MESSAGE_TEXT_BUILD</CMPNAME>
+     <SCONAME>IV_LANGU</SCONAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>ABAP System Field: Language Key of Text Environment</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>MESSAGE_TEXT_BUILD</CMPNAME>
+     <SCONAME>IV_MSGID</SCONAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>Application Area</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>MESSAGE_TEXT_BUILD</CMPNAME>
+     <SCONAME>IV_MSGNO</SCONAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>İleti numarası</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>MESSAGE_TEXT_BUILD</CMPNAME>
+     <SCONAME>IV_MSGV1</SCONAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>İleti değişkeni</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>MESSAGE_TEXT_BUILD</CMPNAME>
+     <SCONAME>IV_MSGV2</SCONAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>İleti değişkeni</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>MESSAGE_TEXT_BUILD</CMPNAME>
+     <SCONAME>IV_MSGV3</SCONAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>İleti değişkeni</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>MESSAGE_TEXT_BUILD</CMPNAME>
+     <SCONAME>IV_MSGV4</SCONAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>İleti değişkeni</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SET_MESSAGE</CMPNAME>
+     <SCONAME>ES_RETURN</SCONAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>Dönüş parametresi</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SOFT_DELETE</CMPNAME>
+     <SCONAME>IT_PARNR</SCONAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>İlgili kişi numarası</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>UPDATE</CMPNAME>
+     <SCONAME>CS_DATA</SCONAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>MDP Group | Emutabakat Firma İlgilileri</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>UPDATE</CMPNAME>
+     <SCONAME>IS_DATA</SCONAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>MDP Group | Emutabakat Firma İlgilileri</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>VALIDATE_FOR_ALV_ROW</CMPNAME>
+     <SCONAME>ES_RETURN</SCONAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>Dönüş parametresi</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>VALIDATE_FOR_ALV_ROW</CMPNAME>
+     <SCONAME>IS_DATA</SCONAME>
+     <LANGU>T</LANGU>
+     <DESCRIPT>global structure</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>

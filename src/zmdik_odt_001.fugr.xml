@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_FUGR" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <AREAT>odata rfc</AREAT>
+   <INCLUDES>
+    <SOBJ_NAME>LZMDIK_ODT_001TOP</SOBJ_NAME>
+    <SOBJ_NAME>SAPLZMDIK_ODT_001</SOBJ_NAME>
+   </INCLUDES>
+   <FUNCTIONS>
+    <item>
+     <FUNCNAME>RFCSON</FUNCNAME>
+     <REMOTE_CALL>R</REMOTE_CALL>
+     <SHORT_TEXT>rfcson</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>IV_KUNNR</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <TYP>KUNNR</TYP>
+      </RSIMP>
+     </IMPORT>
+     <EXPORT>
+      <RSEXP>
+       <PARAMETER>ES_TABLE</PARAMETER>
+       <TYP>ZMDIK_MUTABAKAT4</TYP>
+      </RSEXP>
+      <RSEXP>
+       <PARAMETER>ET_TABLE</PARAMETER>
+       <TYP>ZMUTABAKATSON</TYP>
+      </RSEXP>
+     </EXPORT>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>IV_KUNNR</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Müşteri numarası</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>ES_TABLE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>mutabakat son</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>ET_TABLE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>mutabakat tt</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+    <item>
+     <FUNCNAME>ZMDIK_ODT_DELETE_DATA</FUNCNAME>
+     <REMOTE_CALL>R</REMOTE_CALL>
+     <SHORT_TEXT>delete data</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>IV_PERSID</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <TYP>ZMDIK_PERSID_DE</TYP>
+      </RSIMP>
+     </IMPORT>
+     <CHANGING>
+      <RSCHA>
+       <PARAMETER>ES_AIRLINE</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <TYP>ZMDIK_PERS_T</TYP>
+      </RSCHA>
+     </CHANGING>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>IV_PERSID</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Personel Id</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>ES_AIRLINE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Personllerin Verileri</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+    <item>
+     <FUNCNAME>ZMDIK_ODT_GET_DATA</FUNCNAME>
+     <REMOTE_CALL>R</REMOTE_CALL>
+     <SHORT_TEXT>get all datas</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>IV_PERSID</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <TYP>ZMDIK_PERSID_DE</TYP>
+      </RSIMP>
+     </IMPORT>
+     <EXPORT>
+      <RSEXP>
+       <PARAMETER>ET_AIRLINE</PARAMETER>
+       <TYP>ZMDIK_PERS_TT</TYP>
+      </RSEXP>
+      <RSEXP>
+       <PARAMETER>ES_AIRLINE</PARAMETER>
+       <TYP>ZMDIK_PERS_T</TYP>
+      </RSEXP>
+     </EXPORT>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>IV_PERSID</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Personel Id</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>ET_AIRLINE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>zmdik_pers_t tt</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>ES_AIRLINE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Personllerin Verileri</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+    <item>
+     <FUNCNAME>ZMDIK_ODT_INSERT_DATA</FUNCNAME>
+     <REMOTE_CALL>R</REMOTE_CALL>
+     <SHORT_TEXT>insert data</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>IV_PERSID</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <TYP>ZMDIK_PERSID_DE</TYP>
+      </RSIMP>
+     </IMPORT>
+     <CHANGING>
+      <RSCHA>
+       <PARAMETER>ES_AIRLINE</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <TYP>ZMDIK_PERS_T</TYP>
+      </RSCHA>
+     </CHANGING>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>IV_PERSID</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Personel Id</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>ES_AIRLINE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Personllerin Verileri</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+   </FUNCTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

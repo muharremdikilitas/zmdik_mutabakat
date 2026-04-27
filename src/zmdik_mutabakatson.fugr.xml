@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_FUGR" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <AREAT>mutabakatson</AREAT>
+   <INCLUDES>
+    <SOBJ_NAME>LZMDIK_MUTABAKATSONTOP</SOBJ_NAME>
+    <SOBJ_NAME>SAPLZMDIK_MUTABAKATSON</SOBJ_NAME>
+   </INCLUDES>
+   <FUNCTIONS>
+    <item>
+     <FUNCNAME>GET_DATA</FUNCNAME>
+     <REMOTE_CALL>R</REMOTE_CALL>
+     <SHORT_TEXT>GET DATA</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>IV_KUNNR</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <TYP>KUNNR</TYP>
+      </RSIMP>
+     </IMPORT>
+     <EXPORT>
+      <RSEXP>
+       <PARAMETER>ES_TABLE</PARAMETER>
+       <TYP>ZMDIK_T006</TYP>
+      </RSEXP>
+      <RSEXP>
+       <PARAMETER>ET_TABLE</PARAMETER>
+       <TYP>ZMDIK_T006S</TYP>
+      </RSEXP>
+     </EXPORT>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>IV_KUNNR</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Müşteri numarası</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>ES_TABLE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>mutabakat tablo</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>ET_TABLE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>ZMDIK_S006 TT</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+    <item>
+     <FUNCNAME>ZMDIK_GET_ALL</FUNCNAME>
+     <REMOTE_CALL>R</REMOTE_CALL>
+     <SHORT_TEXT>get data all</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>IV_RECORD_ID</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <TYP>NUM10</TYP>
+      </RSIMP>
+     </IMPORT>
+     <EXPORT>
+      <RSEXP>
+       <PARAMETER>ET_TABLE</PARAMETER>
+       <TYP>ZMUTABAKATSTR</TYP>
+      </RSEXP>
+      <RSEXP>
+       <PARAMETER>ES_TABLE</PARAMETER>
+       <TYP>ZMDIK_ODATA_STR</TYP>
+      </RSEXP>
+     </EXPORT>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>IV_RECORD_ID</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>10 basamaklı numara</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>ET_TABLE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>str tt</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>ES_TABLE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Mutabakat structure</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+    <item>
+     <FUNCNAME>ZMDIK_UPDATE2</FUNCNAME>
+     <REMOTE_CALL>R</REMOTE_CALL>
+     <SHORT_TEXT>update2</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>IV_RECORD_ID</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <TYP>NUM10</TYP>
+      </RSIMP>
+     </IMPORT>
+     <CHANGING>
+      <RSCHA>
+       <PARAMETER>ES_DATA</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <TYP>ZMDIK_ODATA_STR</TYP>
+      </RSCHA>
+     </CHANGING>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>IV_RECORD_ID</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>10 basamaklı numara</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>ES_DATA</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>odata structere</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+   </FUNCTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

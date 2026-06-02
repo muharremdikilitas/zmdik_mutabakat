@@ -124,8 +124,10 @@ CLASS lcl_agreement DEFINITION.
           ps_row TYPE zmdik_str,
       send_group_mail                                                         "Grup e-postası gönderir
         IMPORTING
+          iv_kunnr     TYPE kna1-kunnr
           iv_mail_text TYPE string
-          iv_rows      TYPE string,
+          iv_rows      TYPE string
+          iv_has_notok TYPE abap_bool DEFAULT abap_false,
       on_link_click FOR EVENT link_click OF cl_salv_events_table
       ##NEEDED
         IMPORTING row
@@ -241,9 +243,6 @@ CLASS lcl_agreement IMPLEMENTATION.
     IF sy-subrc <> 0.
       cv_agreement_sts = TEXT-007.  " Mutabakat bulunamadı mesajı
       cv_description   = ''.
-    ELSE.
-      " Veriyi başarılı bir şekilde aldık, id değerine erişilebilir
-      WRITE: / 'ID:', lv_id.
     ENDIF.
   ENDMETHOD.               "get_reconciliation_status
 
@@ -492,6 +491,36 @@ CLASS lcl_agreement IMPLEMENTATION.
 * Set ALV Events.
     SET HANDLER go_agreement->on_user_command FOR mo_events.
     SET HANDLER go_agreement->on_link_click FOR mo_events.
+
+* ---- Sütun başlıklarını ayarla ----
+    set_column_text( iv_fname = 'KUNNR'             iv_text = 'Müşteri No' ).
+    set_column_text( iv_fname = 'NAME1'             iv_text = 'Müşteri Adı' ).
+    set_column_text( iv_fname = 'STCD1'             iv_text = 'Vergi No' ).
+    set_column_text( iv_fname = 'STCEG'             iv_text = 'VKN' ).
+    set_column_text( iv_fname = 'LAND1'             iv_text = 'Ülke' ).
+    set_column_text( iv_fname = 'GJAHR'             iv_text = 'Yıl' ).
+    set_column_text( iv_fname = 'MONAT'             iv_text = 'Ay' ).
+    set_column_text( iv_fname = 'OEDK'              iv_text = 'ÖDK Kodu' ).
+    set_column_text( iv_fname = 'OEDK_TXT'          iv_text = 'ÖDK Metni' ).
+    set_column_text( iv_fname = 'TANITICI'          iv_text = 'Tanıtıcı' ).
+    set_column_text( iv_fname = 'BAKIYE'            iv_text = 'Bakiye' ).
+    set_column_text( iv_fname = 'WAERS'             iv_text = 'Para Birimi' ).
+    set_column_text( iv_fname = 'UPB_BAKIYE'        iv_text = 'UPB Bakiye' ).
+    set_column_text( iv_fname = 'UPB_WAERS'         iv_text = 'UPB Para Bir.' ).
+    set_column_text( iv_fname = 'TANIM'             iv_text = 'Borç/Alacak' ).
+    set_column_text( iv_fname = 'MUTABAKAT_DRM'     iv_text = 'Mut. Kodu' ).
+    set_column_text( iv_fname = 'MUTABAKAT_DRM_DTL' iv_text = 'Mutabakat Durumu' ).
+    set_column_text( iv_fname = 'STATUS_ICON'       iv_text = 'Durum' ).
+    set_column_text( iv_fname = 'ACIKLAMA'          iv_text = 'Açıklama' ).
+    set_column_text( iv_fname = 'DETAY'             iv_text = 'Detay' ).
+
+* ---- MANDT sütununu gizle ----
+    TRY.
+        DATA(lo_col_mandt) = CAST cl_salv_column_table(
+                               mo_columns->get_column( 'MANDT' ) ).
+        lo_col_mandt->set_visible( abap_false ).
+      CATCH cx_salv_not_found. " MANDT yapıda yoksa sorun yok
+    ENDTRY.
   ENDMETHOD.                "set_alv_properties
 
   METHOD set_column_text.
@@ -768,7 +797,7 @@ CLASS lcl_agreement IMPLEMENTATION.
       IF sy-subrc = 0.
         UPDATE zmdik_mutabakat4 FROM ls_record.
       ELSE.
-        ls_record-agreement_sts     = TEXT-010.
+        ls_record-agreement_sts = TEXT-010.
         INSERT zmdik_mutabakat4 FROM ls_record.
       ENDIF.
     ENDLOOP.
@@ -790,17 +819,24 @@ CLASS lcl_agreement IMPLEMENTATION.
           lv_group_key  TYPE string,
           lv_old_key    TYPE string,
           lv_table_rows TYPE string,
-          lv_rec_id     TYPE num10.
+          lv_rec_id     TYPE num10,
+          " Bir önceki grubun bilgilerini saklamak için
+          lv_old_kunnr  TYPE kna1-kunnr,
+          lv_old_gjahr  TYPE gjahr,
+          lv_old_monat  TYPE monat,
+          lv_old_name1  TYPE kna1-name1,
+          " Mutabık değil durumu
+          lv_has_notok  TYPE abap_bool.
 
     IF gt_selected IS INITIAL.
       MESSAGE TEXT-062 TYPE 'I'.
       RETURN.
     ENDIF.
 
-    " 1) SO10 şablonunu oku (Şablonda &TABLE_CONTENT placeholder tanımlı olsun)
+    " 1) SO10 şablonunu oku
     CALL FUNCTION 'READ_TEXT'
       EXPORTING
-        client    = '100'
+        client    = sy-mandt
         id        = 'ST'
         language  = sy-langu
         name      = 'ZMDIK_TXT001'
@@ -822,138 +858,197 @@ CLASS lcl_agreement IMPLEMENTATION.
         SEPARATED BY cl_abap_char_utilities=>newline.
     ENDLOOP.
 
-    " 2) gt_selected'i KUNNR, GJAHR, MONAT bazında sıralayıp gruplama yapıyoruz
+    " 2) KUNNR, GJAHR, MONAT bazında sırala
     lt_sorted = gt_selected.
     SORT lt_sorted BY kunnr gjahr monat.
 
-    CLEAR lv_old_key.
-    CLEAR lv_table_rows.
-    CLEAR lv_mail_text.
+    CLEAR: lv_old_key, lv_table_rows, lv_mail_text.
 
-     ##INTO_OK
+    ##INTO_OK
     LOOP AT lt_sorted INTO ls_sel.
       lv_group_key = |{ ls_sel-kunnr }_{ ls_sel-gjahr }_{ ls_sel-monat }|.
+
       IF lv_group_key <> lv_old_key.
-        " Yeni grup başlamadan önce, önceki grubun maili gönderilsin
+        " Yeni grup başlamadan önce, önceki grubun mailini gönder
         IF lv_old_key IS NOT INITIAL.
-          " Grup için ID değerini al (aynı gruba ait kayıtlar aynı ID ile güncellenmiş olmalı)
-       ##WARN_OK
-          SELECT SINGLE id INTO lv_rec_id
+          ##WARN_OK
+          SELECT SINGLE id INTO @lv_rec_id
             FROM zmdik_mutabakat4
-            WHERE kunnr = ls_sel-kunnr
-              AND gjahr = ls_sel-gjahr
-              AND monat = ls_sel-monat
-              AND bukrs = mv_bukrs.
-          " Güncelleme: Şablonu al, yer tutucuları değiştir
+            WHERE kunnr = @lv_old_kunnr
+              AND gjahr = @lv_old_gjahr
+              AND monat = @lv_old_monat
+              AND bukrs = @mv_bukrs.
+          gv_subject = |Mutabakat - { lv_old_name1 } - { lv_old_gjahr }/{ lv_old_monat }|.
           lv_mail_text = lv_template.
           REPLACE ALL OCCURRENCES OF '&SUBJECT' IN lv_mail_text WITH gv_subject.
-          REPLACE ALL OCCURRENCES OF '&NAME'    IN lv_mail_text WITH ls_sel-name1.
+          REPLACE ALL OCCURRENCES OF '&NAME'    IN lv_mail_text WITH lv_old_name1.
           REPLACE ALL OCCURRENCES OF '&ID'      IN lv_mail_text WITH lv_rec_id.
           REPLACE '&TABLE_CONTENT' IN lv_mail_text WITH lv_table_rows.
-          " Grup mailini gönder
-          me->send_group_mail( iv_mail_text = lv_mail_text iv_rows = lv_table_rows ).
-          CLEAR lv_table_rows.
+          me->send_group_mail(
+            iv_kunnr     = lv_old_kunnr
+            iv_mail_text = lv_mail_text
+            iv_rows      = lv_table_rows
+            iv_has_notok = lv_has_notok ).
+          CLEAR: lv_table_rows, lv_has_notok.
         ENDIF.
-        lv_old_key = lv_group_key.
+        " Yeni grubun bilgilerini kaydet
+        lv_old_key   = lv_group_key.
+        lv_old_kunnr = ls_sel-kunnr.
+        lv_old_gjahr = ls_sel-gjahr.
+        lv_old_monat = ls_sel-monat.
+        lv_old_name1 = ls_sel-name1.
       ENDIF.
-      " Her satır için HTML tablo satırı oluştur:
-      DATA(lv_tr) = |<tr><td>{ ls_sel-tanitici }</td><td>{ ls_sel-Upb_Bakiye }</td><td>{ ls_sel-Upb_Waers }</td></tr>|.
+
+      " Mutabık değil satır var mı?
+      IF ls_sel-mutabakat_drm = TEXT-011.  " 'B' = Mutabık Değil
+        lv_has_notok = abap_true.
+      ENDIF.
+
+      " HTML tablo satırı – SO10 şablonundaki 3 sütunla eşleşiyor
+      DATA(lv_tr) = |<tr>|
+        & |<td>{ ls_sel-tanitici } { ls_sel-oedk_txt }</td>|
+        & |<td align="right">{ ls_sel-upb_bakiye }</td>|
+        & |<td>{ ls_sel-upb_waers }</td>|
+        & |</tr>|.
       CONCATENATE lv_table_rows lv_tr INTO lv_table_rows
         SEPARATED BY cl_abap_char_utilities=>newline.
     ENDLOOP.
 
-    " Son grup için de mail gönder
+    " Son grup için mail gönder
     IF lv_table_rows IS NOT INITIAL.
       ##WARN_OK
-      SELECT SINGLE id INTO lv_rec_id
+      SELECT SINGLE id INTO @lv_rec_id
         FROM zmdik_mutabakat4
-        WHERE kunnr = ls_sel-kunnr
-          AND gjahr = ls_sel-gjahr
-          AND monat = ls_sel-monat
-          AND bukrs = mv_bukrs.
+        WHERE kunnr = @lv_old_kunnr
+          AND gjahr = @lv_old_gjahr
+          AND monat = @lv_old_monat
+          AND bukrs = @mv_bukrs.
+      gv_subject = |Mutabakat - { lv_old_name1 } - { lv_old_gjahr }/{ lv_old_monat }|.
       lv_mail_text = lv_template.
       REPLACE ALL OCCURRENCES OF '&SUBJECT' IN lv_mail_text WITH gv_subject.
-      REPLACE ALL OCCURRENCES OF '&NAME'    IN lv_mail_text WITH ls_sel-name1.
+      REPLACE ALL OCCURRENCES OF '&NAME'    IN lv_mail_text WITH lv_old_name1.
       REPLACE ALL OCCURRENCES OF '&ID'      IN lv_mail_text WITH lv_rec_id.
       REPLACE '&TABLE_CONTENT' IN lv_mail_text WITH lv_table_rows.
-      me->send_group_mail( iv_mail_text = lv_mail_text iv_rows = lv_table_rows ).
+      me->send_group_mail(
+        iv_kunnr     = lv_old_kunnr
+        iv_mail_text = lv_mail_text
+        iv_rows      = lv_table_rows
+        iv_has_notok = lv_has_notok ).
     ENDIF.
   ENDMETHOD.
 
 
 
   METHOD send_group_mail.
-    " İki parametre: iv_mail_text (string) ve iv_rows (string)
-    DATA: lv_mail      TYPE string,
-          lt_lines     TYPE STANDARD TABLE OF string,
+    " Parametreler: iv_mail_text (HTML şablonu), iv_rows (tablo satırları),
+    " iv_has_notok (mutabık değil satır var mı? -> Excel eki ekle)
+    DATA: lo_bcs       TYPE REF TO cl_bcs,
+          lo_doc       TYPE REF TO cl_document_bcs,
+          lo_recipient TYPE REF TO if_recipient_bcs,
+          lt_body      TYPE bcsy_text,
+          lv_mail      TYPE string,
+          lt_lines     TYPE TABLE OF string,
           lv_line      TYPE string,
-          lt_mail_body TYPE STANDARD TABLE OF soli,
-          ls_mail_line TYPE soli.
+          lt_emails    TYPE TABLE OF zmdik_mail_tablo,
+          ls_email     TYPE zmdik_mail_tablo,
+          lx_bcs       TYPE REF TO cx_bcs.
 
-    " iv_mail_text salt okunur olduğundan yerel değişkene kopyalayın
+    " Placeholder'ları doldur
     lv_mail = iv_mail_text.
-    " &TABLE_CONTENT placeholder'ını iv_rows ile değiştirin
     REPLACE '&TABLE_CONTENT' IN lv_mail WITH iv_rows.
 
-    CLEAR lt_lines.
+    " String'i satırlara böl
     SPLIT lv_mail AT cl_abap_char_utilities=>newline INTO TABLE lt_lines.
-    CLEAR lt_mail_body.
     LOOP AT lt_lines INTO lv_line.
-      CLEAR ls_mail_line.
-      ls_mail_line-line = lv_line.
-      APPEND ls_mail_line TO lt_mail_body.
+      APPEND lv_line TO lt_body.
     ENDLOOP.
 
-    " Mail header, document verileri ve alıcı listesini hazırla
-    DATA: lt_header   TYPE TABLE OF solisti1,
-          ls_header   TYPE solisti1,
-          doc_data    TYPE sodocchgi1,
-          lt_receiver TYPE STANDARD TABLE OF somlreci1,
-          ls_receiver TYPE somlreci1.
+    TRY.
+        " BCS gönderim isteği
+        lo_bcs = cl_bcs=>create_persistent( ).
 
-    CLEAR lt_header.
-    ls_header-line = gv_subject.
-    APPEND ls_header TO lt_header.
+        " HTML doküman oluştur
+        lo_doc = cl_document_bcs=>create_document(
+                   i_type    = 'HTM'
+                   i_subject = gv_subject
+                   i_text    = lt_body ).
 
-    CLEAR doc_data.
-    doc_data-obj_name  = 'MUTABAKAT'.
-    doc_data-obj_descr = gv_subject.
-    doc_data-obj_langu = sy-langu.
+        " Mutabık değil durumunda Excel eki ekle
+        IF iv_has_notok = abap_true.
+          DATA: lv_excel_str TYPE string,
+                lv_xstr      TYPE xstring,
+                lt_excel_bin TYPE solix_tab,
+                lv_att_size  TYPE i.
 
-    CLEAR lt_receiver.
-    " İlgili alıcıların (örneğin, ZMDIK_MAIL_TABLO tablosundan) çekilmesi
-    DATA: lt_emails TYPE TABLE OF zmdik_mail_tablo,
-          ls_email  TYPE zmdik_mail_tablo.
-    SELECT * FROM zmdik_mail_tablo
-      INTO TABLE @lt_emails.
+          " HTML tablo formatında Excel içeriği oluştur
+          lv_excel_str =
+            |<html><head><meta charset="UTF-8"/></head><body>|
+            & |<h2>Mutabakat Detayı - { gv_subject }</h2>|
+            & |<table border="1" cellpadding="4" cellspacing="0">|
+            & |<tr>|
+            & |<th>Tanıtıcı</th>|
+            & |<th>ÖDK Metni</th>|
+            & |<th>Bakiye</th>|
+            & |<th>Para Birimi</th>|
+            & |<th>UPB Bakiye</th>|
+            & |<th>UPB Para Bir.</th>|
+            & |<th>Mutabakat Durumu</th>|
+            & |</tr>|
+            & |iv_rows|
+            & |</table></body></html>|.
 
-    LOOP AT lt_emails INTO ls_email.
-      CLEAR ls_receiver.
-      ls_receiver-receiver = ls_email-email.
-      ls_receiver-rec_type = 'U'. " Kullanıcı tipi
-      APPEND ls_receiver TO lt_receiver.
-    ENDLOOP.
+          " String -> xstring (UTF-8)
+          CALL FUNCTION 'SCMS_STRING_TO_XSTRING'
+            EXPORTING
+              text     = lv_excel_str
+            IMPORTING
+              buffer   = lv_xstr
+            EXCEPTIONS
+              OTHERS   = 1.
+          IF sy-subrc = 0.
+            CALL FUNCTION 'SCMS_XSTRING_TO_BINARY'
+              EXPORTING
+                buffer        = lv_xstr
+              IMPORTING
+                output_length = lv_att_size
+              TABLES
+                binary_tab    = lt_excel_bin.
+            lo_doc->add_attachment(
+              i_attachment_type    = 'XLS'
+              i_attachment_subject =
+                |Mutabakat_Detay_{ sy-datum }.xls|
+              i_att_content_hex    = lt_excel_bin ).
+          ENDIF.
+        ENDIF.
 
-    CALL FUNCTION 'SO_NEW_DOCUMENT_SEND_API1'
-      EXPORTING
-        document_data              = doc_data
-        put_in_outbox              = 'X'
-        commit_work                = 'X'
-        document_type              = 'HTM'
-      TABLES
-        object_header              = lt_header
-        object_content             = lt_mail_body
-        receivers                  = lt_receiver
-      EXCEPTIONS
-        too_many_receivers         = 1
-        document_not_sent          = 2
-        operation_no_authorization = 4
-        OTHERS                     = 99.
-    IF sy-subrc = 0.
-      MESSAGE TEXT-066 TYPE 'S'.
-    ELSE.
-      MESSAGE TEXT-067 TYPE 'E'.
-    ENDIF.
+        lo_bcs->set_document( lo_doc ).
+
+        " Alıcıları ekle – yalnızca seçili müşterinin e-posta adresi
+        SELECT * FROM zmdik_mail_tablo
+          INTO TABLE @lt_emails
+          WHERE kunnr = @iv_kunnr.
+        IF lt_emails IS INITIAL.
+          " Müşteriye özel kayıt yoksa genel (kunnr boş) kayıtları al
+          SELECT * FROM zmdik_mail_tablo
+            INTO TABLE @lt_emails
+            WHERE kunnr = @space.
+        ENDIF.
+        LOOP AT lt_emails INTO ls_email.
+          IF ls_email-email IS NOT INITIAL.
+            lo_recipient =
+              cl_cam_address_bcs=>create_internet_address(
+                ls_email-email ).
+            lo_bcs->add_recipient( lo_recipient ).
+          ENDIF.
+        ENDLOOP.
+
+        lo_bcs->send( i_with_error_screen = abap_false ).
+        COMMIT WORK.
+        MESSAGE TEXT-066 TYPE 'S'.
+
+      CATCH cx_bcs INTO lx_bcs.
+        MESSAGE lx_bcs->get_text( ) TYPE 'E'.
+    ENDTRY.
   ENDMETHOD.
 ##NEEDED
   METHOD on_after_user_command.

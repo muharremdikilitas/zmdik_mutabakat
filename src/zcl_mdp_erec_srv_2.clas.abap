@@ -86,7 +86,7 @@ public section.
       !ES_RETURN type BAPIRET1 .
   methods GET_NEXT_PARNR
     returning
-      value(RV_PARNR) type ZMDIK_EREC-PARNR .
+      value(RV_PARNR) type PARNR .
   methods VALIDATE_FOR_ALV_ROW
     importing
       value(IS_DATA) type TY_EREC optional
@@ -119,7 +119,7 @@ CLASS ZCL_MDP_EREC_SRV_2 IMPLEMENTATION.
 
 
 METHOD GET_NEXT_PARNR.
-  DATA(lv_parnr) = VALUE zmdik_erec-parnr( ).
+  DATA(lv_parnr) = VALUE parnr( ).
   CALL FUNCTION 'NUMBER_GET_NEXT'
     EXPORTING
       nr_range_nr = c_nr_range_nr
@@ -273,210 +273,210 @@ ENDMETHOD.
 
 METHOD RESET_LOEKZ.
 
-  ev_ok = abap_false.
-  CLEAR ev_msg.
-
-  UPDATE zmdik_erec SET
-        loekz = space
-        aedat = sy-datum
-        aezet = sy-uzeit
-        aenam = sy-uname
-      WHERE parnr = is_row-parnr
-        AND bukrs = is_row-bukrs
-        AND koart = is_row-koart
-        AND accno = is_row-accno
-        AND email = is_row-email.
-
-  IF sy-subrc = 0.
-    ev_ok = abap_true.
-    ev_msg = |Kayıt başarıyla güncellendi.|.
-  ELSE.
-    ev_msg = |Kayıt güncellenemedi.|.
-  ENDIF.
+*  ev_ok = abap_false.
+*  CLEAR ev_msg.
+*
+*  UPDATE zmdik_erec SET
+*        loekz = space
+*        aedat = sy-datum
+*        aezet = sy-uzeit
+*        aenam = sy-uname
+*      WHERE parnr = is_row-parnr
+*        AND bukrs = is_row-bukrs
+*        AND koart = is_row-koart
+*        AND accno = is_row-accno
+*        AND email = is_row-email.
+*
+*  IF sy-subrc = 0.
+*    ev_ok = abap_true.
+*    ev_msg = |Kayıt başarıyla güncellendi.|.
+*  ELSE.
+*    ev_msg = |Kayıt güncellenemedi.|.
+*  ENDIF.
 
 ENDMETHOD.
 
 
   method SAVE_ALL.
-
-    data: lv_update  type i,
-          lv_saved   type i,
-          lv_skipped type i,
-          lv_total   type i.
-
-    data: lv_errflds type string,
-          lv_errmsg  type string,
-          ls_srv     type zgty_str.
-
-    data: ls_return type bapiret1,
-          lt_return type tt_bapiret1.
-
-    field-symbols <ls> type zgty_str.
-
-    data: lt_db_valid type standard table of zmdik_erec,
-          ls_db       type zmdik_erec.
-    data lt_insert_buffer type standard table of zmdik_erec with empty key.
-
-
-
-    clear: lv_update, lv_saved, lv_skipped, lv_total.
-
-    loop at it_data assigning <ls>.
-      lv_total = lv_total + 1.
-
-      " Kırmızı → Hatalı, atla
-      if <ls>-icon = '@0A@'.
-        lv_skipped = lv_skipped + 1.
-        continue.
-      endif.
-
-      " Sarı → Update
-      if <ls>-icon = '@09@'.
-
-        if <ls>-parnr is not initial.
-          select single * from zmdik_erec
-       where parnr = @<ls>-parnr
-       into @data(ls_upd).
-          if sy-subrc <> 0.
-            message 'Güncellenecek kayıt bulunamadı (PARNR).' type 'S' display like 'E'.
-            return.
-          endif.
-
-          <ls>-bukrs = ls_upd-bukrs.
-          <ls>-erdat = ls_upd-erdat.
-          <ls>-erzet = ls_upd-erzet.
-          <ls>-parnr = ls_upd-parnr.
-
-          if validate_for_alv_row(
-              exporting
-                is_data    =  <ls>                " global structure
-             changing  es_return = ls_return
-                        et_return = lt_return ) = abap_false.
-            lv_skipped = lv_skipped + 1.
-            return.
-          endif.
-
-          <ls>-aenam = sy-uname.
-          <ls>-aedat = sy-datum.
-          <ls>-aezet = sy-uzeit.
-
-          update zmdik_erec set
-            email = @<ls>-email,
-            ename = @<ls>-ename,
-            telf1 = @<ls>-telf1,
-            tckid = @<ls>-tckid,
-            koart = @<ls>-koart,
-            accno = @<ls>-accno,
-            loekz = @<ls>-loekz,
-            aedat = @<ls>-aedat,
-            aezet = @<ls>-aezet,
-            aenam = @<ls>-aenam
-            where parnr = @<ls>-parnr.
-
-
-          if sy-subrc = 0.
-
-            commit work and wait.
-
-            message 'Seçilen satır güncellendi' type 'S'.
-          else.
-
-            rollback work.
-            message 'Satır güncellenemedi.' type 'S' display like 'E'.
-          endif.
-
-        else.
-          select single * from zmdik_erec
-            where bukrs = @<ls>-bukrs
-              and koart = @<ls>-koart
-              and accno = @<ls>-accno
-              and email = @<ls>-email
-            into @data(ls_old).
-
-          if sy-subrc = 0.
-            ls_old-ename = <ls>-ename.
-            ls_old-tckid = <ls>-tckid.
-            ls_old-telf1 = <ls>-telf1.
-            ls_old-loekz = <ls>-loekz.
-            ls_old-aenam = sy-uname.
-            ls_old-aedat = sy-datum.
-            ls_old-aezet = sy-uzeit.
-
-            modify zmdik_erec from ls_old.
-            if sy-subrc = 0.
-              lv_update = lv_update + 1.
-            endif.
-          endif.
-
-          continue.
-        endif.
-      endif.
-
-
-      " Yeşil → Insert
-      if <ls>-icon = '@08@'.
-
-        if validate_for_alv_row(
-               exporting
-                 is_data    =  <ls>
-                changing  es_return = ls_return
-                   et_return = lt_return ) = abap_false.
-          lv_skipped = lv_skipped + 1.
-          lv_skipped = lv_skipped + 1.
-          continue.
-        endif.
-
-
-        if <ls>-parnr is initial.
-          <ls>-parnr = get_next_parnr( ).
-          <ls>-erdat = sy-datum.
-          <ls>-erzet = sy-uzeit.
-          <ls>-ernam = sy-uname.
-        endif.
-
-        if <ls>-parnr is initial.
-          lv_skipped = lv_skipped + 1.
-          continue.
-        endif.
-
-
-
-        clear ls_db.
-        move-corresponding <ls> to ls_db.
-
-        " 3.4 Toplu insert bufferına ekleme
-        append ls_db to lt_insert_buffer.
-
-        lv_saved = lv_saved + 1.
-
-        data ls_new type zmdik_erec.
-
-
-
-      endif.
-
-    endloop.
-
-
-
-    "-----------------------------------------------
-    " 4) TOPLU INSERT
-    "-----------------------------------------------
-    if lt_insert_buffer is not initial.
-
-      sort lt_insert_buffer by parnr bukrs koart accno email.
-      delete adjacent duplicates from lt_insert_buffer
-        comparing parnr bukrs koart accno email.
-
-      modify zmdik_erec from table lt_insert_buffer.
-
-    endif.
-    commit work and wait.
-
-    ev_saved   = lv_saved.
-    ev_updated = lv_update.
-    ev_skipped = lv_skipped.
-    ev_total   = lv_total.
+*
+*    data: lv_update  type i,
+*          lv_saved   type i,
+*          lv_skipped type i,
+*          lv_total   type i.
+*
+*    data: lv_errflds type string,
+*          lv_errmsg  type string,
+*          ls_srv     type zgty_str.
+*
+*    data: ls_return type bapiret1,
+*          lt_return type tt_bapiret1.
+*
+*    field-symbols <ls> type zgty_str.
+*
+*    data: lt_db_valid type standard table of zmdik_erec,
+*          ls_db       type zmdik_erec.
+*    data lt_insert_buffer type standard table of zmdik_erec with empty key.
+*
+*
+*
+*    clear: lv_update, lv_saved, lv_skipped, lv_total.
+*
+*    loop at it_data assigning <ls>.
+*      lv_total = lv_total + 1.
+*
+*      " Kırmızı → Hatalı, atla
+*      if <ls>-icon = '@0A@'.
+*        lv_skipped = lv_skipped + 1.
+*        continue.
+*      endif.
+*
+*      " Sarı → Update
+*      if <ls>-icon = '@09@'.
+*
+*        if <ls>-parnr is not initial.
+*          select single * from zmdik_erec
+*       where parnr = @<ls>-parnr
+*       into @data(ls_upd).
+*          if sy-subrc <> 0.
+*            message 'Güncellenecek kayıt bulunamadı (PARNR).' type 'S' display like 'E'.
+*            return.
+*          endif.
+*
+*          <ls>-bukrs = ls_upd-bukrs.
+*          <ls>-erdat = ls_upd-erdat.
+*          <ls>-erzet = ls_upd-erzet.
+*          <ls>-parnr = ls_upd-parnr.
+*
+*          if validate_for_alv_row(
+*              exporting
+*                is_data    =  <ls>                " global structure
+*             changing  es_return = ls_return
+*                        et_return = lt_return ) = abap_false.
+*            lv_skipped = lv_skipped + 1.
+*            return.
+*          endif.
+*
+*          <ls>-aenam = sy-uname.
+*          <ls>-aedat = sy-datum.
+*          <ls>-aezet = sy-uzeit.
+*
+*          update zmdik_erec set
+*            email = @<ls>-email,
+*            ename = @<ls>-ename,
+*            telf1 = @<ls>-telf1,
+*            tckid = @<ls>-tckid,
+*            koart = @<ls>-koart,
+*            accno = @<ls>-accno,
+*            loekz = @<ls>-loekz,
+*            aedat = @<ls>-aedat,
+*            aezet = @<ls>-aezet,
+*            aenam = @<ls>-aenam
+*            where parnr = @<ls>-parnr.
+*
+*
+*          if sy-subrc = 0.
+*
+*            commit work and wait.
+*
+*            message 'Seçilen satır güncellendi' type 'S'.
+*          else.
+*
+*            rollback work.
+*            message 'Satır güncellenemedi.' type 'S' display like 'E'.
+*          endif.
+*
+*        else.
+*          select single * from zmdik_erec
+*            where bukrs = @<ls>-bukrs
+*              and koart = @<ls>-koart
+*              and accno = @<ls>-accno
+*              and email = @<ls>-email
+*            into @data(ls_old).
+*
+*          if sy-subrc = 0.
+*            ls_old-ename = <ls>-ename.
+*            ls_old-tckid = <ls>-tckid.
+*            ls_old-telf1 = <ls>-telf1.
+*            ls_old-loekz = <ls>-loekz.
+*            ls_old-aenam = sy-uname.
+*            ls_old-aedat = sy-datum.
+*            ls_old-aezet = sy-uzeit.
+*
+*            modify zmdik_erec from ls_old.
+*            if sy-subrc = 0.
+*              lv_update = lv_update + 1.
+*            endif.
+*          endif.
+*
+*          continue.
+*        endif.
+*      endif.
+*
+*
+*      " Yeşil → Insert
+*      if <ls>-icon = '@08@'.
+*
+*        if validate_for_alv_row(
+*               exporting
+*                 is_data    =  <ls>
+*                changing  es_return = ls_return
+*                   et_return = lt_return ) = abap_false.
+*          lv_skipped = lv_skipped + 1.
+*          lv_skipped = lv_skipped + 1.
+*          continue.
+*        endif.
+*
+*
+*        if <ls>-parnr is initial.
+*          <ls>-parnr = get_next_parnr( ).
+*          <ls>-erdat = sy-datum.
+*          <ls>-erzet = sy-uzeit.
+*          <ls>-ernam = sy-uname.
+*        endif.
+*
+*        if <ls>-parnr is initial.
+*          lv_skipped = lv_skipped + 1.
+*          continue.
+*        endif.
+*
+*
+*
+*        clear ls_db.
+*        move-corresponding <ls> to ls_db.
+*
+*        " 3.4 Toplu insert bufferına ekleme
+*        append ls_db to lt_insert_buffer.
+*
+*        lv_saved = lv_saved + 1.
+*
+*        data ls_new type zmdik_erec.
+*
+*
+*
+*      endif.
+*
+*    endloop.
+*
+*
+*
+*    "-----------------------------------------------
+*    " 4) TOPLU INSERT
+*    "-----------------------------------------------
+*    if lt_insert_buffer is not initial.
+*
+*      sort lt_insert_buffer by parnr bukrs koart accno email.
+*      delete adjacent duplicates from lt_insert_buffer
+*        comparing parnr bukrs koart accno email.
+*
+*      modify zmdik_erec from table lt_insert_buffer.
+*
+*    endif.
+*    commit work and wait.
+*
+*    ev_saved   = lv_saved.
+*    ev_updated = lv_update.
+*    ev_skipped = lv_skipped.
+*    ev_total   = lv_total.
 
   endmethod.
 
@@ -504,75 +504,75 @@ ENDMETHOD.
 
 
  METHOD SOFT_DELETE.
-  rv_affected = 0.
-  IF it_parnr IS INITIAL.
-    RETURN.
-  ENDIF.
-
-  LOOP AT it_parnr INTO DATA(lv_key).
-    UPDATE zmdik_erec SET loekz = 'X'
-      WHERE parnr = @lv_key.
-    IF sy-subrc = 0.
-      rv_affected += 1.
-    ENDIF.
-  ENDLOOP.
-
-  IF rv_affected > 0 AND iv_do_commit = abap_true.
-    COMMIT WORK AND WAIT.
-    MESSAGE |{ rv_affected } kayıt silindi| TYPE 'S'.
-  ELSEIF rv_affected = 0.
-    MESSAGE 'Silinecek (işaretlenecek) kayıt bulunamadı.' TYPE 'S' DISPLAY LIKE 'E'.
-  ENDIF.
+*  rv_affected = 0.
+*  IF it_parnr IS INITIAL.
+*    RETURN.
+*  ENDIF.
+*
+*  LOOP AT it_parnr INTO DATA(lv_key).
+*    UPDATE zmdik_erec SET loekz = 'X'
+*      WHERE parnr = @lv_key.
+*    IF sy-subrc = 0.
+*      rv_affected += 1.
+*    ENDIF.
+*  ENDLOOP.
+*
+*  IF rv_affected > 0 AND iv_do_commit = abap_true.
+*    COMMIT WORK AND WAIT.
+*    MESSAGE |{ rv_affected } kayıt silindi| TYPE 'S'.
+*  ELSEIF rv_affected = 0.
+*    MESSAGE 'Silinecek (işaretlenecek) kayıt bulunamadı.' TYPE 'S' DISPLAY LIKE 'E'.
+*  ENDIF.
 ENDMETHOD.
 
 
  method UPDATE.
-   rv_ok = abap_false.
-   cs_data = is_data.
-
-   " Kayıt var mı?
-   select single * from zmdik_erec
-     where parnr = @is_data-parnr
-     into @data(ls_old).
-   if sy-subrc <> 0.
-     message 'Güncellenecek kayıt bulunamadı (PARNR).' type 'S' display like 'E'.
-     return.
-   endif.
-
-   " Korunan alanlar (akışına uygun)
-   cs_data-bukrs = ls_old-bukrs.
-   cs_data-erdat = ls_old-erdat.
-   cs_data-erzet = ls_old-erzet.
-   cs_data-parnr = ls_old-parnr.
-
-
-   cs_data-aenam = sy-uname.
-   cs_data-aedat = sy-datum.
-   cs_data-aezet = sy-uzeit.
-
-   update zmdik_erec set
-     email = @cs_data-email,
-     ename = @cs_data-ename,
-     telf1 = @cs_data-telf1,
-     tckid = @cs_data-tckid,
-     koart = @cs_data-koart,
-     accno = @cs_data-accno,
-     loekz = @cs_data-loekz,
-     aedat = @cs_data-aedat,
-     aezet = @cs_data-aezet,
-     aenam = @cs_data-aenam
-     where parnr = @cs_data-parnr.
-
-   if sy-subrc = 0.
-     if iv_do_commit = abap_true.
-       commit work and wait.
-     endif.
-     message 'Seçilen satır güncellendi' type 'S'.
-     rv_ok = abap_true.
-   else.
-     rollback work.
-     message 'Satır güncellenemedi.' type 'S' display like 'E'.
-   endif.
+*   rv_ok = abap_false.
+*   cs_data = is_data.
+*
+*   " Kayıt var mı?
+*   select single * from zmdik_erec
+*     where parnr = @is_data-parnr
+*     into @data(ls_old).
+*   if sy-subrc <> 0.
+*     message 'Güncellenecek kayıt bulunamadı (PARNR).' type 'S' display like 'E'.
+*     return.
+*   endif.
+*
+*   " Korunan alanlar (akışına uygun)
+*   cs_data-bukrs = ls_old-bukrs.
+*   cs_data-erdat = ls_old-erdat.
+*   cs_data-erzet = ls_old-erzet.
+*   cs_data-parnr = ls_old-parnr.
+*
+*
+*   cs_data-aenam = sy-uname.
+*   cs_data-aedat = sy-datum.
+*   cs_data-aezet = sy-uzeit.
+*
+*   update zmdik_erec set
+*     email = @cs_data-email,
+*     ename = @cs_data-ename,
+*     telf1 = @cs_data-telf1,
+*     tckid = @cs_data-tckid,
+*     koart = @cs_data-koart,
+*     accno = @cs_data-accno,
+*     loekz = @cs_data-loekz,
+*     aedat = @cs_data-aedat,
+*     aezet = @cs_data-aezet,
+*     aenam = @cs_data-aenam
+*     where parnr = @cs_data-parnr.
+*
+*   if sy-subrc = 0.
+*     if iv_do_commit = abap_true.
+*       commit work and wait.
+*     endif.
+*     message 'Seçilen satır güncellendi' type 'S'.
+*     rv_ok = abap_true.
+*   else.
+*     rollback work.
+*     message 'Satır güncellenemedi.' type 'S' display like 'E'.
+*   endif.
  endmethod.
 
 

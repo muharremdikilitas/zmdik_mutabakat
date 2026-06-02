@@ -28,9 +28,15 @@ FUNCTION ZMDIK_GET_ALL.
       SELECT SINGLE email FROM zcust_mail
         INTO <fs_rec>-email
         WHERE kunnr = <fs_rec>-kunnr.
-      " REC_MAIL bilgisi, verinin tutulduğu diğer tablodan çekiliyor (zmdik_mail_tablo)
-      SELECT SINGLE EMAIL FROM zmdik_mail_tablo
-        INTO <fs_rec>-rec_mail.
+      " REC_MAIL: zmdik_mail_tablo tablosundan genel alıcı adresi
+      " (Tabloda kunnr bazlı kayıt yoksa ilk genel kayıt alınır)
+      SELECT SINGLE email FROM zmdik_mail_tablo
+        INTO <fs_rec>-rec_mail
+        WHERE kunnr = <fs_rec>-kunnr.
+      IF sy-subrc <> 0.
+        SELECT SINGLE email FROM zmdik_mail_tablo
+          INTO <fs_rec>-rec_mail.
+      ENDIF.
 *      SELECT SINGLE description FROM zmdik_mutabakat4
 *        INTO <fs_rec>-description
 *        WHERE kunnr = <fs_rec>-kunnr.
@@ -56,8 +62,13 @@ FUNCTION ZMDIK_GET_ALL.
     SELECT SINGLE email FROM zcust_mail
       INTO ls_temp-email
       WHERE kunnr = ls_temp-kunnr.
-    SELECT SINGLE EMAIL FROM zmdik_mail_tablo
-      INTO ls_temp-rec_mail.
+    SELECT SINGLE email FROM zmdik_mail_tablo
+      INTO ls_temp-rec_mail
+      WHERE kunnr = ls_temp-kunnr.
+    IF sy-subrc <> 0.
+      SELECT SINGLE email FROM zmdik_mail_tablo
+        INTO ls_temp-rec_mail.
+    ENDIF.
 *    SELECT SINGLE description FROM zmdik_mutabakat4
 *      INTO ls_temp-description
 *      WHERE kunnr = ls_temp-kunnr.
